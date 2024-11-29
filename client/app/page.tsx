@@ -1,9 +1,9 @@
-
-
-export default function Home() {
+import Home from "./components/home/Home";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
+export default function HomePage() {
   return (
     <div className="">
-        <h1>Hi</h1>
+        <Home/>
     </div>
   );
 }

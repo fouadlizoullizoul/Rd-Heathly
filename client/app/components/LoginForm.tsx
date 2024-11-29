@@ -10,6 +10,9 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
 import axios from "axios";
+import { RootState } from "../redux/store";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../redux/alertsReducer";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -18,6 +21,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const router = useRouter();
+  const dispatch=useDispatch()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,7 +32,9 @@ const LoginForm = () => {
 
   const onSubmit = async(values: z.infer<typeof formSchema>) => {
     try {
+      dispatch(showLoading())
       const res = await axios.post("http://localhost:5000/api/user/login", values);
+      dispatch(hideLoading())
       if (res.data.success) {
             toast.success(res.data.message);
             localStorage.setItem('token',res.data.data.token);
@@ -37,6 +43,7 @@ const LoginForm = () => {
         toast.error(res.data.message)
       }
     } catch(error){
+        dispatch(hideLoading())
         console.log(error)
         toast.error("Something went wrong")
     }

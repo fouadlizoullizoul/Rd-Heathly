@@ -18,8 +18,11 @@ import {
 import { formSchema } from '@/schema/RegisterSchem';
 import * as z from "zod";
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { hideLoading, showLoading } from '../redux/alertsReducer';
 const RegisterForm = () => {
     const router =useRouter()
+    const dispatch=useDispatch()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -30,7 +33,9 @@ const RegisterForm = () => {
       });
       const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
+          dispatch(showLoading())
           const res = await axios.post("http://localhost:5000/api/user/register", values);
+          dispatch(hideLoading())
           if (res.data.success) {
                 toast.success(res.data.message)
                 router.push('/login')
@@ -38,6 +43,7 @@ const RegisterForm = () => {
             toast.error(res.data.message)
           }
         } catch(error){
+            dispatch(hideLoading())
             console.log(error)
             toast.error("Something went wrong")
         }

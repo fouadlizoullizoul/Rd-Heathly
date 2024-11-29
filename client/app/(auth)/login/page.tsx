@@ -2,6 +2,7 @@ import { Card, CardHeader ,  CardTitle,} from '@/components/ui/card'
 import React from 'react'
 import Link from 'next/link'
 import LoginForm from '@/app/components/LoginForm'
+import ProtectedRoute from '@/app/components/routes/ProtectedRoute'
 
 
 const LoginPage = () => {
