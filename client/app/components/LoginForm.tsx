@@ -38,6 +38,7 @@ const LoginForm = () => {
       if (res.data.success) {
             toast.success(res.data.message);
             localStorage.setItem('token',res.data.data.token);
+            
             router.push('/')
       } else {
         toast.error(res.data.message)
