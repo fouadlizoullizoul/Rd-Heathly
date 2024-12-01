@@ -26,7 +26,7 @@ const Sidebar:React.FC<SidebarProps> = ({collapsed,user}) => {
       <Image src='/J.png' alt='' height={80} width={80} />
         <div className="">
             {menuToBeRendered.map((item, index) => (
-              <div key={index} className={`flex items-center mt-[30px] gap-3 mx-[10px] ${pathe === item.path ? "bg-[#013737] p-1 rounded-md" : ""}`}>
+              <div key={index} className={`flex items-center mt-[30px] gap-3 mx-[10px] ${pathe === item.path ? "bg-[#013737] p-1 rounded-md w-full" : ""}`}>
                 <item.icon className='text-[rgba(225,225,225,0.9)]'/>
                 {!collapsed && <Link href={item.path} className="text-[rgba(225,225,225,0.7)] text-[18px]">{item.name}</Link>}
               </div>

@@ -14,7 +14,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({children}) => {
     const [collapsed,setCollapsed]=useState(false)
     const {user} =useSelector((state:RootState)=>state.user)
-    console.log(user)
      return (
     <div className='p-[20px]'>
         <div className='layout flex'>
@@ -29,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
                             <Link href='/profile' className="uppercase text-[15px] underline">{user?.name}</Link>
                         </div> 
                     </div>
-                    <div className='body bg-white rounded-[5px] shadow-xl h-[85vh] w-[100%]'>
+                    <div className='body bg-white rounded-[5px] shadow-xl h-[85vh] w-[100%] p-[20px]'>
                         {children}
                     </div>
                 </div>

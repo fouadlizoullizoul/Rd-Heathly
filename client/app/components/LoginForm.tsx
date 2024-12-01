@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
 import axios from "axios";
-import { RootState } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../redux/alertsReducer";
 
