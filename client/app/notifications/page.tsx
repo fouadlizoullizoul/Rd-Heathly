@@ -3,32 +3,13 @@ import React from "react";
 import Layout from "../components/home/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RootState } from "../redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Link from "next/link";
-import { hideLoading, showLoading } from "../redux/alertsReducer";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useNotifications } from "../api/api";
+
 const Notifications = () => {
+  const {markAllAsSeen,deleteAll}=useNotifications()
   const { user } = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch();
-  const markAllasSeen = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.post("http://localhost:5000/api/user/mark-all-notifications-as-seen", {
-        userId: user?._id,
-      });
-      dispatch(hideLoading());
-      if (res.data.success) {
-        toast.success(res.data.message);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      toast.error("Something went wrong");
-    }
-  };
   return (
     <Layout>
       <div className="flex flex-col  gap-2">
@@ -42,7 +23,10 @@ const Notifications = () => {
           </TabsList>
           <TabsContent value="unseen">
             <div className="flex justify-end">
-              <h1 className="underline text-xl cursor-pointer text-gray-600" onClick={()=>markAllasSeen()}>
+              <h1
+                className="underline text-xl cursor-pointer text-gray-600"
+                onClick={() => markAllAsSeen()}
+              >
                 Mark all as seen
               </h1>
             </div>
@@ -57,10 +41,22 @@ const Notifications = () => {
               </div>
             ))}
           </TabsContent>
-          <TabsContent value="seen" className="flex justify-end">
-            <h1 className="underline text-xl cursor-pointer text-gray-600">
-              Delete All
-            </h1>
+          <TabsContent value="seen">
+            <div className="flex justify-end">
+              <h1 className="underline text-xl cursor-pointer text-gray-600" onClick={()=>deleteAll()}>
+                Delete All
+              </h1>
+            </div>
+            {user?.seenNotifications.map((not) => (
+              <div
+                key={not.message}
+                className="shadow-lg w-[50vh] p-4 rounded-md "
+              >
+                <Link href={not.onClickPath}>
+                  <h1 className="text-sm">{not.message}</h1>
+                </Link>
+              </div>
+            ))}
           </TabsContent>
         </Tabs>
       </div>
