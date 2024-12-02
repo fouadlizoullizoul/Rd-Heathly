@@ -24,7 +24,11 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
                     <div className='header bg-white rounded-[5px] shadow-xl mb-[20px] h-[12vh] w-[100%] flex items-center justify-between cursor-pointer px-[20px]'>
                         {!collapsed ? <X onClick={()=>setCollapsed(true)}/> : <Menu onClick={()=>setCollapsed(false)}/>}
                         <div className='flex items-center gap-3'>
-                            <Bell />
+                            <Link href='/notifications' className='relative'>
+                                <Bell /> 
+                                <span className="absolute bottom-[15px] bg-red-500 font-bold rounded-full w-[15px] text-sm text-center flex items-center justify-center text-white h-[15px] right-[1px]">{user?.unseenNotifications.length}</span>
+                            </Link>
+                            
                             <Link href='/profile' className="uppercase text-[15px] underline">{user?.name}</Link>
                         </div> 
                     </div>

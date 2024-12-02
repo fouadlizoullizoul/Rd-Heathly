@@ -77,12 +77,12 @@ router.post("/get-user-info-by-id", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/apply-doctor-account", async (req, res) => {
+router.post("/apply-doctor-account",authMiddleware, async (req, res) => {
   try {
-    const newDoctor=new Doctor({...req.body,status:"active"})
+    const newDoctor=new Doctor({...req.body,status:"active"}) 
     await newDoctor.save();
     const adminUser= await User.findOne({isAdmin:true});
-    const unseenNotifications=adminUser.unseenNotifications();
+    const unseenNotifications=adminUser.unseenNotifications;
     unseenNotifications.push({
       type: "new-docotor-request",
       message: `${newDoctor.firstName} ${newDoctor.lastName} has applied for a doctor account`,
@@ -93,6 +93,7 @@ router.post("/apply-doctor-account", async (req, res) => {
       onClickPath:"/admin/doctors"
     });
     await User.findByIdAndUpdate(adminUser._id,{unseenNotifications})
+    res.status(200).send({ message: "Doctor account application successful", success: true });
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: "Error Applying doctor account", success: false });

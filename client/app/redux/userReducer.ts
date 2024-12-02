@@ -1,11 +1,16 @@
 'use client'
 import { createSlice } from '@reduxjs/toolkit'
+interface Notification {
+  message: string;
+  onClickPath: string;
+}
 interface User {
+    _id:string
     name: string;
     email: string;
     isAdmin:boolean;
-    seenNotifications:[];
-    unseenNotifications:[]
+    seenNotifications:Notification[];
+    unseenNotifications:Notification[]
   }
   interface UserState {
     user: User | null;
