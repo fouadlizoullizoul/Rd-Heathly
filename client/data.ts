@@ -36,12 +36,12 @@ export const adminMenu=[
     },
     {
         name:'Users',
-        path: '/users',
+        path: '/admin/users',
         icon:Users
     },
     {
         name:'Doctors',
-        path: '/doctors',
+        path: '/admin/doctors',
         icon:Hospital
     },
     {

@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import Link from "next/link";
-import { useNotifications } from "../api/api";
+import { useNotifications } from "../hooks/useNotifications";
 
 const Notifications = () => {
   const {markAllAsSeen,deleteAll}=useNotifications()
