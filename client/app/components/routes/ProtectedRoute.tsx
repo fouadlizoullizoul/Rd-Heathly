@@ -13,6 +13,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const {user}=useSelector((state:RootState)=>state.user);
+  console.log(user)
   const dispatch =useDispatch();
   const getUser=async()=>{
         try {

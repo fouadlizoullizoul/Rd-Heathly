@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../redux/alertsReducer";
 import axios from "axios";
+import toast from "react-hot-toast";
 type Doctors={
+    userId:string;
     _id: string;
     firstName: string;
     lastName: string;
@@ -38,11 +40,34 @@ const useDoctors = () => {
     }
   };
 
+const changeDoctorStatus = async (status:string,doctor:Doctors) => {
+    try {
+      dispatch(showLoading());
+      const res = await axios.post<{ success: boolean; data: Doctors[] ;message:string}>("http://localhost:5000/api/admin/change-doctor-status",{
+        doctorId:doctor._id,
+        userId:doctor.userId,
+        status:status,
+      }, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      dispatch(hideLoading());
+      if (res.data.success) {
+        toast.success(res.data.message)
+        fetchDoctors();
+      }
+    } catch (error) {
+      dispatch(hideLoading());
+      toast.error("error changing doctor account status")
+      console.error("Error fetching users:", error);
+    }
+  };
   useEffect(() => {
     fetchDoctors();
   }, []);
 
-  return Doctors;
+  return {Doctors,fetchDoctors,changeDoctorStatus};
 };
 
 export default useDoctors;

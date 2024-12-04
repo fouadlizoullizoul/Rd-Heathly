@@ -5,10 +5,15 @@ import {useRouter , usePathname } from 'next/navigation'
 import React from 'react'
 import Image from 'next/image'
 import { LogOut } from 'lucide-react'
+import { House } from 'lucide-react';
+import { User } from 'lucide-react';
+import { ClipboardList } from 'lucide-react';
 interface User {
+  _id: string;
   name: string;
   email: string;
   isAdmin: boolean;
+  isDoctor:boolean;
   seenNotifications:[];
   unseenNotifications:[]
 }
@@ -18,9 +23,28 @@ interface SidebarProps {
     user:User | null
   }
 const Sidebar:React.FC<SidebarProps> = ({collapsed,user}) => {
-    const menuToBeRendered=user?.isAdmin ? adminMenu : userMenu
+  const doctorMenu=[
+    {
+        name:'Home',
+        path: '/',
+        icon:House ,
+    },
+    {
+        name:'Appointments',
+        path: '/appointments',
+        icon:ClipboardList
+    },
+    {
+        name:'Profile',
+        path: `/profile/${user?._id}`,
+        icon:User
+    },
+
+]
+    const menuToBeRendered=user?.isAdmin ? adminMenu :user?.isDoctor ? doctorMenu  : userMenu
     const pathe=usePathname()
     const router =useRouter()
+
   return (
     <div className='flex flex-col'>
       <Image src='/J.png' alt='' height={80} width={80} />

@@ -25,6 +25,10 @@ const userSchema =new mongoose.Schema({
         type:Boolean,
         default:false,
     },
+    isDoctor:{
+        type:Boolean,
+        default:false,
+    },
     seenNotifications:{
         type:Array,
         default:[],

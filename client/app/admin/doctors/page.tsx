@@ -11,8 +11,25 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import useDoctors from '../../hooks/useDoctors'
+type Doctors={
+  userId:string;
+  _id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber:number;
+  website:string;
+  address:string;
+  specialization:string;
+  experience: number;
+  feePerCunsultation:number;
+  createdAt: string;
+  status:string;
+}
 const DoctorsPage = () => {
-    const doctors=useDoctors()
+    const {Doctors,changeDoctorStatus}=useDoctors()
+    const handleStatusChange = (status: string, doctor:Doctors) => {
+      changeDoctorStatus(status, doctor);
+    };
   return (
     <Layout>
          <Table>
@@ -30,19 +47,19 @@ const DoctorsPage = () => {
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
-            {doctors.map((item)=>(
-            <TableBody key={item._id}>
+            {Doctors.map((doctor)=>(
+            <TableBody key={doctor._id}>
               <TableRow>
-                <TableCell className="font-medium uppercase">{item.firstName}</TableCell>
-                <TableCell>{item.lastName}</TableCell>
-                <TableCell>0{item.phoneNumber}</TableCell>
-                <TableCell>{item.website}</TableCell>
-                <TableCell>{item.address}</TableCell>
-                <TableCell>{item.specialization}</TableCell>
-                <TableCell>{item.experience}</TableCell>
-                <TableCell>{item.status}</TableCell>
+                <TableCell className="font-medium uppercase">{doctor.firstName}</TableCell>
+                <TableCell>{doctor.lastName}</TableCell>
+                <TableCell>0{doctor.phoneNumber}</TableCell>
+                <TableCell>{doctor.website}</TableCell>
+                <TableCell>{doctor.address}</TableCell>
+                <TableCell>{doctor.specialization}</TableCell>
+                <TableCell>{doctor.experience}</TableCell>
+                <TableCell>{doctor.status}</TableCell>
                 <TableCell className="text-right underline">
-                    {item.status === "pending" ? <h1>Approve</h1> : <h1>Blook</h1>}
+                    {doctor.status === "pending" ? <h1 onClick={()=>handleStatusChange("approved",doctor)}>Approve</h1> : <h1 onClick={() => handleStatusChange("rejected", doctor)}>Blook</h1>}
                 </TableCell>
               </TableRow>
             </TableBody>
