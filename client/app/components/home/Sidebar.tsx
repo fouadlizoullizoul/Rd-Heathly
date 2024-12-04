@@ -42,12 +42,17 @@ const Sidebar:React.FC<SidebarProps> = ({collapsed,user}) => {
 
 ]
     const menuToBeRendered=user?.isAdmin ? adminMenu :user?.isDoctor ? doctorMenu  : userMenu
+    const role =user?.isAdmin ? "Admin" : user?.isDoctor ? "Doctor" :"user"
     const pathe=usePathname()
     const router =useRouter()
 
   return (
     <div className='flex flex-col'>
-      <Image src='/J.png' alt='' height={80} width={80} />
+      <div className='flex flex-col items-center'>
+        <Image src='/J.png' alt='' height={80} width={80} />
+      <h1 className=' text-gray-300'>{role}</h1>
+      </div>
+      
         <div className="">
             {menuToBeRendered.map((item, index) => (
               <div key={index} className={`flex items-center mt-[30px] gap-3 mx-[10px] ${pathe === item.path ? "bg-[#013737] p-1 rounded-md w-full" : ""}`}>
