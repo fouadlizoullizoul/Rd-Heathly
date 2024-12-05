@@ -42,6 +42,15 @@ const doctorSchema = new mongoose.Schema(
     status:{
       type: String,
       default: "pending"
+    },
+    availability:{
+      type:[
+        {
+          day:{type:String,required:true},
+          slots:{type:[String],default:[]},
+        }
+      ],
+      default:[]
     }
   },
   {

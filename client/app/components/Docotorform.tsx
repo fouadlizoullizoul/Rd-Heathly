@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Form,
   FormControl,
@@ -10,9 +10,37 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDoctorForm } from "../hooks/useDoctorForm";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import toast from "react-hot-toast";
 
 const Docotorform = () => {
- const {form,onSubmit}=useDoctorForm()
+  const { form, onSubmit } = useDoctorForm();
+  const handleTime = (e, form) => {
+    const day = form.getValues("day");
+    if (!day) {
+      toast.error("Please select a day before adding a time slot");
+      return;
+    }
+
+    const availability = form.getValues("availability") || [];
+    const timeSlot = e.target.value;
+
+    const dayIndex = availability.findIndex((entry) => entry.day === day);
+    if (dayIndex !== -1) {
+      availability[dayIndex].slots.push(timeSlot);
+    } else {
+      availability.push({ day, slots: [timeSlot] });
+    }
+
+    form.setValue("availability", availability);
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} method="post">
@@ -132,8 +160,47 @@ const Docotorform = () => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="availability"
+            render={() => (
+              <FormItem>
+                <FormLabel>Select Availability </FormLabel>
+                <div className="flex gap-3">
+                  <Select
+                    onValueChange={(value) => form.setValue("day", value)}
+                  >
+                    <SelectTrigger className="w-[280px]">
+                      <SelectValue placeholder="Select a day" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="Monday">Monday</SelectItem>
+                        <SelectItem value="Tuesday">Tuesday</SelectItem>
+                        <SelectItem value="Wednesday">Wednesday</SelectItem>
+                        <SelectItem value="Thursday">Thursday</SelectItem>
+                        <SelectItem value="Friday">Friday</SelectItem>
+                        <SelectItem value="Saturday">Saturday</SelectItem>
+                        <SelectItem value="Sunday">Sunday</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Time Slot (e.g., 9:00 AM - 11:00 AM)"
+                      onChange={(e) => {
+                        handleTime(e, form);
+                      }}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <Button type="submit" onClick={() => console.log("Buttonx clicked!")}>
+        <Button type="submit">
           Submit
         </Button>
       </form>

@@ -9,4 +9,12 @@ export const DoctorSchema = z.object({
     specialization:z.string(),
     experience:z.preprocess((value) => Number(value), z.number().positive("Phone number must be positive")),
     feePerCunsultation:z.preprocess((value) => Number(value), z.number().positive("Phone number must be positive")),
+    availability: z
+    .array(
+      z.object({
+        day: z.enum(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]),
+        slots: z.array(z.string()),
+      })
+    )
+    .optional(), // الحقل اختياري
   });

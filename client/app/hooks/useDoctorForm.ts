@@ -20,6 +20,7 @@ export const useDoctorForm = ()=>{
         website: "",
         address: "",
         specialization: "",
+        availability: [],
       },
     });
     async function onSubmit(values: z.infer<typeof DoctorSchema>) {
